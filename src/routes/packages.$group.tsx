@@ -82,23 +82,29 @@ function PackagesPage() {
       window.setTimeout(() => setNotice(null), 6000);
       return;
     }
-    const created = subscribe({
-      identifier: user.identifier,
-      amount: pkg.amount,
-      returnAmount: pkg.returnAmount,
-      durationMs: pkg.durationMs,
-    });
-    const newBalance = updateBalance(user.identifier, -pkg.amount);
-    setBalance(newBalance);
-    setSub(created);
-    setNotice(
-      `تم خصم ${fmt(pkg.amount)} ج.م من محفظتك والاشتراك في الباقة، أرباحك هتزيد لحد ${fmt(pkg.returnAmount)} ج.م خلال ${pkg.duration}.`,
-    );
-    window.setTimeout(() => setNotice(null), 6000);
+    setLoading(true);
+    const ms = randomLoadingMs();
+    window.setTimeout(() => {
+      const created = subscribe({
+        identifier: user.identifier,
+        amount: pkg.amount,
+        returnAmount: pkg.returnAmount,
+        durationMs: pkg.durationMs,
+      });
+      const newBalance = updateBalance(user.identifier, -pkg.amount);
+      setBalance(newBalance);
+      setSub(created);
+      setNotice(
+        `تم خصم ${fmt(pkg.amount)} ج.م من محفظتك والاشتراك في الباقة، أرباحك هتزيد لحد ${fmt(pkg.returnAmount)} ج.م خلال ${pkg.duration}.`,
+      );
+      window.setTimeout(() => setNotice(null), 6000);
+      setLoading(false);
+    }, ms);
   }
 
   return (
     <main className="min-h-screen pb-16">
+      <LoadingDialog open={loading} title="جارٍ تنفيذ الاشتراك…" />
       <header className="sticky top-0 z-20 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between gap-3 px-4 py-3">
           <div className="flex items-center gap-2">
