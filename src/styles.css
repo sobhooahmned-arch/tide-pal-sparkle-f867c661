@@ -46,6 +46,7 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
+  --color-verified: var(--verified);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -70,6 +71,7 @@
   --popover: oklch(0.21 0.032 257);
   --popover-foreground: oklch(0.97 0.005 250);
   --primary: oklch(0.78 0.16 160);
+  --verified: oklch(0.62 0.19 250);
   --primary-foreground: oklch(0.19 0.04 258);
   --secondary: oklch(0.27 0.035 258);
   --secondary-foreground: oklch(0.97 0.005 250);
@@ -98,6 +100,7 @@
 }
 
 .dark {
+  --verified: oklch(0.7 0.17 250);
   --background: oklch(0.129 0.042 264.695);
   --foreground: oklch(0.984 0.003 247.858);
   --card: oklch(0.208 0.042 265.755);
