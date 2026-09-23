@@ -53,7 +53,6 @@ export default defineConfig({
     plugins: [obfuscateClient()],
     build: {
       sourcemap: false,
-      minify: "esbuild",
     },
   },
 });
