@@ -10,33 +10,115 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as DepositRouteImport } from './routes/deposit'
+import { Route as MarketRouteImport } from './routes/market'
+import { Route as RequestsRouteImport } from './routes/requests'
+import { Route as WithdrawRouteImport } from './routes/withdraw'
+import { Route as PackagesGroupRouteImport } from './routes/packages.$group'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DepositRoute = DepositRouteImport.update({
+  id: '/deposit',
+  path: '/deposit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MarketRoute = MarketRouteImport.update({
+  id: '/market',
+  path: '/market',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RequestsRoute = RequestsRouteImport.update({
+  id: '/requests',
+  path: '/requests',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WithdrawRoute = WithdrawRouteImport.update({
+  id: '/withdraw',
+  path: '/withdraw',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PackagesGroupRoute = PackagesGroupRouteImport.update({
+  id: '/packages/$group',
+  path: '/packages/$group',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/deposit': typeof DepositRoute
+  '/market': typeof MarketRoute
+  '/requests': typeof RequestsRoute
+  '/withdraw': typeof WithdrawRoute
+  '/packages/$group': typeof PackagesGroupRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/deposit': typeof DepositRoute
+  '/market': typeof MarketRoute
+  '/requests': typeof RequestsRoute
+  '/withdraw': typeof WithdrawRoute
+  '/packages/$group': typeof PackagesGroupRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/deposit': typeof DepositRoute
+  '/market': typeof MarketRoute
+  '/requests': typeof RequestsRoute
+  '/withdraw': typeof WithdrawRoute
+  '/packages/$group': typeof PackagesGroupRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/deposit'
+    | '/market'
+    | '/requests'
+    | '/withdraw'
+    | '/packages/$group'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/admin'
+    | '/deposit'
+    | '/market'
+    | '/requests'
+    | '/withdraw'
+    | '/packages/$group'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/deposit'
+    | '/market'
+    | '/requests'
+    | '/withdraw'
+    | '/packages/$group'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  DepositRoute: typeof DepositRoute
+  MarketRoute: typeof MarketRoute
+  RequestsRoute: typeof RequestsRoute
+  WithdrawRoute: typeof WithdrawRoute
+  PackagesGroupRoute: typeof PackagesGroupRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +130,59 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/deposit': {
+      id: '/deposit'
+      path: '/deposit'
+      fullPath: '/deposit'
+      preLoaderRoute: typeof DepositRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/market': {
+      id: '/market'
+      path: '/market'
+      fullPath: '/market'
+      preLoaderRoute: typeof MarketRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/requests': {
+      id: '/requests'
+      path: '/requests'
+      fullPath: '/requests'
+      preLoaderRoute: typeof RequestsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/withdraw': {
+      id: '/withdraw'
+      path: '/withdraw'
+      fullPath: '/withdraw'
+      preLoaderRoute: typeof WithdrawRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/packages/$group': {
+      id: '/packages/$group'
+      path: '/packages/$group'
+      fullPath: '/packages/$group'
+      preLoaderRoute: typeof PackagesGroupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  DepositRoute: DepositRoute,
+  MarketRoute: MarketRoute,
+  RequestsRoute: RequestsRoute,
+  WithdrawRoute: WithdrawRoute,
+  PackagesGroupRoute: PackagesGroupRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
