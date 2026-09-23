@@ -15,6 +15,7 @@ import {
   getSubscription,
   progressOf,
   remainingMs,
+  settleSubscription,
   type Subscription,
 } from "@/lib/subscription";
 
