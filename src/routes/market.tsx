@@ -114,12 +114,7 @@ function MarketPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => navigate({ to: "/requests" })}
-                className="rounded-lg border border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
-              >
-                طلباتي
-              </button>
+              <RequestsButton />
               <button
                 onClick={() => {
                   clearStoredUser();
