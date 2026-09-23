@@ -1,3 +1,5 @@
+import { updateBalance } from "@/lib/store";
+
 export type Subscription = {
   identifier: string;
   amount: number;
@@ -9,6 +11,7 @@ export type Subscription = {
   taxSenderNumber?: string;
   taxProofName?: string;
   taxSubmittedAt?: string;
+  credited?: boolean;
 };
 
 const KEY = "em_subscriptions";
@@ -103,6 +106,21 @@ export function currentProfit(sub: Subscription, now = Date.now()): number {
 
 export function remainingMs(sub: Subscription, now = Date.now()): number {
   return Math.max(0, sub.startedAt + sub.durationMs - now);
+}
+
+/**
+ * تحويل أرباح الباقة للمحفظة تلقائياً بعد انتهاء مدتها (مرة واحدة فقط).
+ * يرجع المبلغ المضاف أو null لو لم يحن الوقت أو تمت الإضافة سابقاً.
+ */
+export function settleSubscription(identifier: string): number | null {
+  const sub = getSubscription(identifier);
+  if (!sub || sub.credited || progressOf(sub) < 1) return null;
+  const id = norm(identifier);
+  write(
+    read().map((s) => (norm(s.identifier) === id ? { ...s, credited: true } : s)),
+  );
+  updateBalance(identifier, sub.returnAmount);
+  return sub.returnAmount;
 }
 
 export function formatRemaining(ms: number): string {

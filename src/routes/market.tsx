@@ -15,6 +15,7 @@ import {
   getSubscription,
   progressOf,
   remainingMs,
+  settleSubscription,
   type Subscription,
 } from "@/lib/subscription";
 
@@ -60,6 +61,7 @@ function MarketPage() {
       return;
     }
     setUser(u);
+    settleSubscription(u.identifier);
     setBalance(getBalance(u.identifier));
     setSub(getSubscription(u.identifier));
   }, [navigate]);
@@ -74,10 +76,15 @@ function MarketPage() {
     return () => window.clearInterval(id);
   }, []);
 
-  // تحديث الرصيد لو الإدارة أضافت مبلغاً
+  // إضافة أرباح الباقة للمحفظة تلقائياً بعد انتهاء مدتها + تحديث الرصيد
   useEffect(() => {
     if (!user) return;
     const id = window.setInterval(() => {
+      const credited = settleSubscription(user.identifier);
+      if (credited) {
+        setNotice(`تم إضافة أرباحك ${fmt(credited)} ج.م لرصيد محفظتك تلقائياً 🎉`);
+        window.setTimeout(() => setNotice(null), 8000);
+      }
       setBalance(getBalance(user.identifier));
     }, 2000);
     return () => window.clearInterval(id);
@@ -196,7 +203,9 @@ function MarketPage() {
             </div>
             {subDone && (
               <p className="mt-3 text-sm text-primary">
-                أرباح باقة {fmt(sub.amount)} ج.م جاهزة للسحب بعد دفع ضريبة الباقة ({fmt(sub.tax)} ج.م).
+                {sub.credited
+                  ? `تم إضافة ${fmt(sub.returnAmount)} ج.م لمحفظتك ✅ — متاحة للسحب بعد دفع ضريبة الباقة (${fmt(sub.tax)} ج.م).`
+                  : `أرباح باقة ${fmt(sub.amount)} ج.م هتتضاف لمحفظتك تلقائياً، ومتاحة للسحب بعد دفع ضريبة الباقة (${fmt(sub.tax)} ج.م).`}
               </p>
             )}
           </section>
