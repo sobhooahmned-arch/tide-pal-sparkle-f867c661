@@ -162,16 +162,21 @@ function DepositPage() {
       setView("banned");
       return;
     }
-    addRequest({
-      identifier: activeUser.identifier,
-      name: activeUser.name,
-      kind: "deposit",
-      amount: value,
-      proof: proof.dataUrl,
-      proofName: proof.name,
-    });
-    setReqs(userRequests(activeUser.identifier));
-    setView("pending");
+    setLoading(true);
+    const ms = randomLoadingMs();
+    window.setTimeout(() => {
+      addRequest({
+        identifier: activeUser.identifier,
+        name: activeUser.name,
+        kind: "deposit",
+        amount: value,
+        proof: proof.dataUrl,
+        proofName: proof.name,
+      });
+      setReqs(userRequests(activeUser.identifier));
+      setView("pending");
+      setLoading(false);
+    }, ms);
   }
 
   return (
