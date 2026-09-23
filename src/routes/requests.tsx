@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, ArrowDownLeft, ArrowUpRight, Gem } from "lucide-react";
+import { ArrowRight, ArrowDownLeft, ArrowUpRight, BadgeCheck, Gem } from "lucide-react";
 import { getStoredUser, type StoredUser } from "@/lib/auth";
 import { fmt } from "@/lib/market";
 import { userRequests, type MoneyRequest } from "@/lib/store";
@@ -132,6 +132,10 @@ function RequestsPage() {
           </button>
           <div>
             <p className="text-sm font-bold leading-tight">طلباتي</p>
+            <span className="mt-1 inline-flex items-center gap-1 rounded-full border border-verified/30 bg-verified/10 px-2 py-0.5 text-[11px] font-bold text-verified">
+              <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" />
+              منصة موثقة
+            </span>
             <p className="text-xs text-muted-foreground">
               سجل عمليات الإيداع والسحب والاستثمار
             </p>
