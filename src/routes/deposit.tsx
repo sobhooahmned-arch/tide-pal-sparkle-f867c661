@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { RequestsButton } from "@/components/RequestsButton";
+import { LoadingDialog, randomLoadingMs } from "@/components/LoadingDialog";
 import { clearStoredUser, getStoredUser, type StoredUser } from "@/lib/auth";
 import { fmt } from "@/lib/market";
 import {
@@ -72,6 +73,7 @@ function DepositPage() {
   const [view, setView] = useState<"form" | "pending" | "banned">("form");
   const [banLeft, setBanLeft] = useState(0);
   const [settings, setSettings] = useState(getPaySettings());
+  const [loading, setLoading] = useState(false);
   const METHODS = settings.depositMethods;
   useEffect(() => {
     setSettings(getPaySettings());
