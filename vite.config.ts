@@ -55,8 +55,5 @@ export default defineConfig({
       sourcemap: false,
       minify: "esbuild",
     },
-    esbuild: {
-      legalComments: "none",
-    },
   },
 });
