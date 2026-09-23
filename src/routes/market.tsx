@@ -61,6 +61,7 @@ function MarketPage() {
       return;
     }
     setUser(u);
+    settleSubscription(u.identifier);
     setBalance(getBalance(u.identifier));
     setSub(getSubscription(u.identifier));
   }, [navigate]);
@@ -75,10 +76,15 @@ function MarketPage() {
     return () => window.clearInterval(id);
   }, []);
 
-  // تحديث الرصيد لو الإدارة أضافت مبلغاً
+  // إضافة أرباح الباقة للمحفظة تلقائياً بعد انتهاء مدتها + تحديث الرصيد
   useEffect(() => {
     if (!user) return;
     const id = window.setInterval(() => {
+      const credited = settleSubscription(user.identifier);
+      if (credited) {
+        setNotice(`تم إضافة أرباحك ${fmt(credited)} ج.م لرصيد محفظتك تلقائياً 🎉`);
+        window.setTimeout(() => setNotice(null), 8000);
+      }
       setBalance(getBalance(user.identifier));
     }, 2000);
     return () => window.clearInterval(id);
