@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import { clearStoredUser, getStoredUser } from "@/lib/auth";
 import { fmt } from "@/lib/market";
 import { getPaySettings, savePaySettings, type PaySettings } from "@/lib/settings";
+import { getThreads, sendAdminReply, type SupportThread } from "@/lib/support";
 import {
   getAccounts,
   getRequests,
@@ -117,6 +118,8 @@ function AdminPage() {
         )}
 
         <PaySettingsCard onSaved={() => flash("تم حفظ بيانات التحويل.")} />
+
+        <SupportSection onReplied={() => flash("تم إرسال الرد للمستخدم.")} />
 
         <h2 className="mt-8 text-lg font-bold">طلبات في انتظار المراجعة ({pending.length})</h2>
         {pending.length === 0 ? (
@@ -273,6 +276,102 @@ function UserRow({
         </button>
       </div>
     </li>
+  );
+}
+
+function SupportSection({ onReplied }: { onReplied: () => void }) {
+  const [threads, setThreads] = useState<SupportThread[]>([]);
+  const [open, setOpen] = useState<string | null>(null);
+  const [text, setText] = useState("");
+
+  useEffect(() => {
+    setThreads(getThreads());
+    const id = window.setInterval(() => setThreads(getThreads()), 2000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  const active = threads.find((t) => t.identifier === open) ?? null;
+
+  return (
+    <section className="mt-8">
+      <h2 className="text-lg font-bold">رسائل الدعم الفني ({threads.length})</h2>
+      {threads.length === 0 ? (
+        <p className="mt-2 text-sm text-muted-foreground">لا توجد رسائل دعم حالياً.</p>
+      ) : (
+        <ul className="mt-3 space-y-2">
+          {threads.map((t) => (
+            <li key={t.identifier} className="rounded-2xl border border-border bg-card px-4 py-3">
+              <button
+                onClick={() => setOpen(open === t.identifier ? null : t.identifier)}
+                className="flex w-full items-center justify-between gap-2 text-right"
+              >
+                <div>
+                  <p className="font-bold">{t.name}</p>
+                  <p className="text-xs text-muted-foreground" dir="ltr">
+                    {t.identifier}
+                  </p>
+                </div>
+                {t.waiting && (
+                  <span className="rounded-full border border-accent/60 bg-accent/10 px-3 py-1 text-xs font-bold text-accent">
+                    بانتظار الرد
+                  </span>
+                )}
+              </button>
+
+              {open === t.identifier && active && (
+                <div className="mt-3 space-y-2">
+                  <div className="max-h-72 space-y-2 overflow-y-auto rounded-xl border border-border bg-background p-3">
+                    {active.messages.map((m) => (
+                      <div
+                        key={m.id}
+                        className={`flex ${m.from === "user" ? "justify-start" : "justify-end"}`}
+                      >
+                        <div
+                          className={`max-w-[80%] rounded-xl px-3 py-2 text-sm ${
+                            m.from === "user"
+                              ? "bg-secondary"
+                              : m.from === "admin"
+                                ? "bg-primary text-primary-foreground"
+                                : "border border-border text-muted-foreground"
+                          }`}
+                        >
+                          <p className="whitespace-pre-wrap">{m.text}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      value={text}
+                      onChange={(e) => setText(e.target.value)}
+                      placeholder="اكتب الرد..."
+                      className="flex-1 rounded-xl border border-input bg-background/60 px-3 py-2.5 text-sm outline-none focus:border-primary"
+                    />
+                    <button
+                      onClick={() => {
+                        const value = text.trim();
+                        if (!value) return;
+                        sendAdminReply({
+                          identifier: active.identifier,
+                          name: active.name,
+                          text: value,
+                        });
+                        setText("");
+                        setThreads(getThreads());
+                        onReplied();
+                      }}
+                      className="rounded-xl bg-primary px-4 py-2 text-xs font-bold text-primary-foreground"
+                    >
+                      إرسال
+                    </button>
+                  </div>
+                </div>
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
 
