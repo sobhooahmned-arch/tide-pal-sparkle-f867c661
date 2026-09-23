@@ -5,11 +5,55 @@
 //     React/TanStack dedupe, error logger plugins, and sandbox detection (port/host/strictPort).
 // You can pass additional config via defineConfig({ vite: { ... }, etc... }) if needed.
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
+import type { Plugin } from "vite";
+
+/** Obfuscates the browser bundle so the shipped code is unreadable. */
+function obfuscateClient(): Plugin {
+  return {
+    name: "obfuscate-client",
+    apply: "build",
+    enforce: "post",
+    applyToEnvironment: (env) => env.name === "client",
+    async renderChunk(code, chunk) {
+      if (!chunk.fileName.endsWith(".js")) return null;
+      const { default: JavaScriptObfuscator } = await import("javascript-obfuscator");
+      const result = JavaScriptObfuscator.obfuscate(code, {
+        compact: true,
+        controlFlowFlattening: true,
+        controlFlowFlatteningThreshold: 0.4,
+        deadCodeInjection: false,
+        disableConsoleOutput: true,
+        identifierNamesGenerator: "hexadecimal",
+        numbersToExpressions: true,
+        selfDefending: true,
+        simplify: true,
+        splitStrings: true,
+        splitStringsChunkLength: 6,
+        stringArray: true,
+        stringArrayEncoding: ["rc4"],
+        stringArrayThreshold: 0.8,
+        stringArrayWrappersCount: 2,
+        stringArrayWrappersType: "function",
+        transformObjectKeys: true,
+        unicodeEscapeSequence: false,
+        target: "browser",
+      });
+      return { code: result.getObfuscatedCode(), map: null };
+    },
+  };
+}
 
 export default defineConfig({
   tanstackStart: {
     // Redirect TanStack Start's bundled server entry to src/server.ts (our SSR error wrapper).
     // nitro/vite builds from this
     server: { entry: "server" },
+  },
+  vite: {
+    plugins: [obfuscateClient()],
+    build: {
+      sourcemap: false,
+      minify: "esbuild",
+    },
   },
 });
