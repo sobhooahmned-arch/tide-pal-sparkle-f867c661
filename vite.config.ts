@@ -56,7 +56,6 @@ export default defineConfig({
       minify: "esbuild",
     },
     esbuild: {
-      drop: ["console", "debugger"],
       legalComments: "none",
     },
   },
