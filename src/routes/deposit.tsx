@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { RequestsButton } from "@/components/RequestsButton";
+import { LoadingDialog, randomLoadingMs } from "@/components/LoadingDialog";
 import { clearStoredUser, getStoredUser, type StoredUser } from "@/lib/auth";
 import { fmt } from "@/lib/market";
 import {
@@ -72,6 +73,7 @@ function DepositPage() {
   const [view, setView] = useState<"form" | "pending" | "banned">("form");
   const [banLeft, setBanLeft] = useState(0);
   const [settings, setSettings] = useState(getPaySettings());
+  const [loading, setLoading] = useState(false);
   const METHODS = settings.depositMethods;
   useEffect(() => {
     setSettings(getPaySettings());
@@ -160,20 +162,26 @@ function DepositPage() {
       setView("banned");
       return;
     }
-    addRequest({
-      identifier: activeUser.identifier,
-      name: activeUser.name,
-      kind: "deposit",
-      amount: value,
-      proof: proof.dataUrl,
-      proofName: proof.name,
-    });
-    setReqs(userRequests(activeUser.identifier));
-    setView("pending");
+    setLoading(true);
+    const ms = randomLoadingMs();
+    window.setTimeout(() => {
+      addRequest({
+        identifier: activeUser.identifier,
+        name: activeUser.name,
+        kind: "deposit",
+        amount: value,
+        proof: proof.dataUrl,
+        proofName: proof.name,
+      });
+      setReqs(userRequests(activeUser.identifier));
+      setView("pending");
+      setLoading(false);
+    }, ms);
   }
 
   return (
     <main className="min-h-screen pb-16">
+      <LoadingDialog open={loading} title="جارٍ إرسال طلب الإيداع…" />
       <header className="sticky top-0 z-20 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
