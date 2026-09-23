@@ -2,6 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ShieldCheck, Smartphone } from "lucide-react";
 import { RequestsButton } from "@/components/RequestsButton";
+import { LoadingDialog, randomLoadingMs } from "@/components/LoadingDialog";
 import { getStoredUser, type StoredUser } from "@/lib/auth";
 import { fmt } from "@/lib/market";
 import { addRequest, getBalance } from "@/lib/store";
@@ -52,6 +53,7 @@ function WithdrawPage() {
   const [senderNumber, setSenderNumber] = useState("");
   const [proofName, setProofName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const paySettings = getPaySettings();
   const amount = Number(raw);
