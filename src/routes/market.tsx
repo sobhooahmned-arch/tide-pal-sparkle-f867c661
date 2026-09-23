@@ -7,6 +7,7 @@ import {
   WalletCards,
 } from "lucide-react";
 import { SupportButton } from "@/components/SupportButton";
+import { RequestsButton } from "@/components/RequestsButton";
 import { clearStoredUser, getStoredUser, type StoredUser } from "@/lib/auth";
 import { createStocks, fmt, tick, toPath, type Stock } from "@/lib/market";
 import { getBalance } from "@/lib/store";

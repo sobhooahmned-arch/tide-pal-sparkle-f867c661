@@ -111,12 +111,15 @@ function WithdrawPage() {
               <p className="text-xs text-muted-foreground">أهلاً {user.name}</p>
             </div>
           </div>
-          <button
-            onClick={() => navigate({ to: "/market", replace: true })}
-            className="rounded-lg border border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
-          >
-            رجوع
-          </button>
+          <div className="flex items-center gap-2">
+            <RequestsButton />
+            <button
+              onClick={() => navigate({ to: "/market", replace: true })}
+              className="rounded-lg border border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
+            >
+              رجوع
+            </button>
+          </div>
         </div>
       </header>
 
