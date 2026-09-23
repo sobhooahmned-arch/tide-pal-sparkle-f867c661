@@ -95,14 +95,20 @@ function WithdrawPage() {
     if (!amount || amount <= 0) return setError("اكتب مبلغاً صحيحاً.");
     if (amount > balance) return setError("المبلغ أكبر من رصيدك.");
     setError(null);
-    addRequest({ identifier: user!.identifier, name: user!.name, kind: "withdraw", amount });
-    setDone(
-      `تم إرسال طلب سحب ${fmt(amount)} ج.م عن طريق ${method} على الرقم ${receiveNumber.trim()}، سيتم تنفيذه بعد مراجعة الإدارة.`,
-    );
+    setLoading(true);
+    const ms = randomLoadingMs();
+    window.setTimeout(() => {
+      addRequest({ identifier: user!.identifier, name: user!.name, kind: "withdraw", amount });
+      setDone(
+        `تم إرسال طلب سحب ${fmt(amount)} ج.م عن طريق ${method} على الرقم ${receiveNumber.trim()}، سيتم تنفيذه بعد مراجعة الإدارة.`,
+      );
+      setLoading(false);
+    }, ms);
   }
 
   return (
     <main className="min-h-screen pb-16">
+      <LoadingDialog open={loading} title="جارٍ إرسال طلب السحب…" />
       <header className="sticky top-0 z-20 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex max-w-3xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
