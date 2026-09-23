@@ -22,6 +22,7 @@ export type MoneyRequest = {
   decidedAt?: string;
   proof?: string;
   proofName?: string;
+  fromNumber?: string;
 };
 
 const ACCOUNTS_KEY = "em_accounts";
@@ -96,6 +97,7 @@ export function addRequest(input: {
   amount: number;
   proof?: string;
   proofName?: string;
+  fromNumber?: string;
 }): MoneyRequest {
   const req: MoneyRequest = {
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
@@ -110,6 +112,7 @@ export function addRequest(input: {
     req.proof = input.proof;
     if (input.proofName !== undefined) req.proofName = input.proofName;
   }
+  if (input.fromNumber !== undefined) req.fromNumber = input.fromNumber;
   write(REQUESTS_KEY, [req, ...getRequests()]);
   return req;
 }
