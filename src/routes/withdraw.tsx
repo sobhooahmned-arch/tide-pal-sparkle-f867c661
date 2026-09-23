@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ShieldCheck, Smartphone } from "lucide-react";
+import { RequestsButton } from "@/components/RequestsButton";
 import { getStoredUser, type StoredUser } from "@/lib/auth";
 import { fmt } from "@/lib/market";
 import { addRequest, getBalance } from "@/lib/store";
