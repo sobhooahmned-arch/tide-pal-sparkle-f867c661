@@ -203,7 +203,9 @@ function MarketPage() {
             </div>
             {subDone && (
               <p className="mt-3 text-sm text-primary">
-                أرباح باقة {fmt(sub.amount)} ج.م جاهزة للسحب بعد دفع ضريبة الباقة ({fmt(sub.tax)} ج.م).
+                {sub.credited
+                  ? `تم إضافة ${fmt(sub.returnAmount)} ج.م لمحفظتك ✅ — متاحة للسحب بعد دفع ضريبة الباقة (${fmt(sub.tax)} ج.م).`
+                  : `أرباح باقة ${fmt(sub.amount)} ج.م هتتضاف لمحفظتك تلقائياً، ومتاحة للسحب بعد دفع ضريبة الباقة (${fmt(sub.tax)} ج.م).`}
               </p>
             )}
           </section>
