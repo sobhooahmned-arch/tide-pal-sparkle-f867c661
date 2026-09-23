@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowRight, ArrowDownLeft, ArrowUpRight, BadgeCheck, Gem } from "lucide-react";
+import { ArrowRight, ArrowDownLeft, ArrowUpRight, Gem } from "lucide-react";
 import { SupportButton } from "@/components/SupportButton";
 import { getStoredUser, type StoredUser } from "@/lib/auth";
 import { fmt } from "@/lib/market";
@@ -132,13 +132,7 @@ function RequestsPage() {
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </button>
           <div>
-            <p className="flex items-center gap-2 text-sm font-bold leading-tight">
-              طلباتي
-              <span className="inline-flex items-center gap-1 rounded-full border border-verified/30 bg-verified/10 px-2 py-0.5 text-[11px] font-bold text-verified">
-                <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                منصة موثقة
-              </span>
-            </p>
+            <p className="text-sm font-bold leading-tight">طلباتي</p>
             <p className="text-xs text-muted-foreground">
               سجل عمليات الإيداع والسحب والاستثمار
             </p>

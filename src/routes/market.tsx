@@ -7,6 +7,7 @@ import {
   WalletCards,
 } from "lucide-react";
 import { SupportButton } from "@/components/SupportButton";
+import { RequestsButton } from "@/components/RequestsButton";
 import { clearStoredUser, getStoredUser, type StoredUser } from "@/lib/auth";
 import { createStocks, fmt, tick, toPath, type Stock } from "@/lib/market";
 import { getBalance } from "@/lib/store";
@@ -114,12 +115,7 @@ function MarketPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => navigate({ to: "/requests" })}
-                className="rounded-lg border border-border px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground"
-              >
-                طلباتي
-              </button>
+              <RequestsButton />
               <button
                 onClick={() => {
                   clearStoredUser();
