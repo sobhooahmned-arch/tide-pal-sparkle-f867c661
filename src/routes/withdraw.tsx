@@ -8,6 +8,7 @@ import {
   getSubscription,
   PACKAGE_TAX,
   progressOf,
+  settleSubscription,
   submitTaxProof,
   type Subscription,
 } from "@/lib/subscription";
@@ -65,6 +66,7 @@ function WithdrawPage() {
       return;
     }
     setUser(u);
+    settleSubscription(u.identifier);
     setBalance(getBalance(u.identifier));
     const s = getSubscription(u.identifier);
     // الضريبة تُطلب فقط بعد اكتمال الباقة وقبل دفع ضريبتها

@@ -6,7 +6,7 @@ import { getStoredUser, type StoredUser } from "@/lib/auth";
 import { fmt } from "@/lib/market";
 import { GROUP_LABEL, INVESTMENT_PACKAGES, isPackageGroup } from "@/lib/packages";
 import { getBalance, updateBalance } from "@/lib/store";
-import { getSubscription, subscribe, type Subscription } from "@/lib/subscription";
+import { getSubscription, settleSubscription, subscribe, type Subscription } from "@/lib/subscription";
 import type { InvestmentPackage } from "@/lib/packages";
 
 export const Route = createFileRoute("/packages/$group")({
@@ -59,6 +59,7 @@ function PackagesPage() {
       return;
     }
     setUser(u);
+    settleSubscription(u.identifier);
     setBalance(getBalance(u.identifier));
     setSub(getSubscription(u.identifier));
   }, [navigate]);
@@ -67,7 +68,7 @@ function PackagesPage() {
 
   function handleSubscribe(pkg: InvestmentPackage) {
     if (!user) return;
-    if (sub) {
+    if (sub && !sub.credited) {
       setNotice("أنت مشترك بالفعل في باقة، استلم أرباحها الأول.");
       window.setTimeout(() => setNotice(null), 5000);
       return;
@@ -133,7 +134,7 @@ function PackagesPage() {
           <InvestmentPackages
             group={group}
             packages={INVESTMENT_PACKAGES[group]}
-            activeAmount={sub?.amount ?? null}
+            activeAmount={sub && !sub.credited ? sub.amount : null}
             onSubscribe={handleSubscribe}
           />
         </div>
