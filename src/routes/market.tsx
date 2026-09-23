@@ -6,6 +6,7 @@ import {
   Landmark,
   WalletCards,
 } from "lucide-react";
+import { SupportButton } from "@/components/SupportButton";
 import { clearStoredUser, getStoredUser, type StoredUser } from "@/lib/auth";
 import { createStocks, fmt, tick, toPath, type Stock } from "@/lib/market";
 import { getBalance } from "@/lib/store";
@@ -224,6 +225,7 @@ function MarketPage() {
         </section>
 
       </div>
+      <SupportButton />
     </main>
   );
 }

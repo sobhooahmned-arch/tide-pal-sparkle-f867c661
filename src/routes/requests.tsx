@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowRight, ArrowDownLeft, ArrowUpRight, BadgeCheck, Gem } from "lucide-react";
+import { SupportButton } from "@/components/SupportButton";
 import { getStoredUser, type StoredUser } from "@/lib/auth";
 import { fmt } from "@/lib/market";
 import { userRequests, type MoneyRequest } from "@/lib/store";
@@ -216,6 +217,7 @@ function RequestsPage() {
           )}
         </section>
       </div>
+      <SupportButton />
     </main>
   );
 }

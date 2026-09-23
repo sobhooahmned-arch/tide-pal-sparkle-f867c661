@@ -14,6 +14,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as DepositRouteImport } from './routes/deposit'
 import { Route as MarketRouteImport } from './routes/market'
 import { Route as RequestsRouteImport } from './routes/requests'
+import { Route as SupportRouteImport } from './routes/support'
 import { Route as WithdrawRouteImport } from './routes/withdraw'
 import { Route as PackagesGroupRouteImport } from './routes/packages.$group'
 
@@ -42,6 +43,11 @@ const RequestsRoute = RequestsRouteImport.update({
   path: '/requests',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WithdrawRoute = WithdrawRouteImport.update({
   id: '/withdraw',
   path: '/withdraw',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/deposit': typeof DepositRoute
   '/market': typeof MarketRoute
   '/requests': typeof RequestsRoute
+  '/support': typeof SupportRoute
   '/withdraw': typeof WithdrawRoute
   '/packages/$group': typeof PackagesGroupRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/deposit': typeof DepositRoute
   '/market': typeof MarketRoute
   '/requests': typeof RequestsRoute
+  '/support': typeof SupportRoute
   '/withdraw': typeof WithdrawRoute
   '/packages/$group': typeof PackagesGroupRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/deposit': typeof DepositRoute
   '/market': typeof MarketRoute
   '/requests': typeof RequestsRoute
+  '/support': typeof SupportRoute
   '/withdraw': typeof WithdrawRoute
   '/packages/$group': typeof PackagesGroupRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/deposit'
     | '/market'
     | '/requests'
+    | '/support'
     | '/withdraw'
     | '/packages/$group'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/deposit'
     | '/market'
     | '/requests'
+    | '/support'
     | '/withdraw'
     | '/packages/$group'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/deposit'
     | '/market'
     | '/requests'
+    | '/support'
     | '/withdraw'
     | '/packages/$group'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   DepositRoute: typeof DepositRoute
   MarketRoute: typeof MarketRoute
   RequestsRoute: typeof RequestsRoute
+  SupportRoute: typeof SupportRoute
   WithdrawRoute: typeof WithdrawRoute
   PackagesGroupRoute: typeof PackagesGroupRoute
 }
@@ -158,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RequestsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/withdraw': {
       id: '/withdraw'
       path: '/withdraw'
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   DepositRoute: DepositRoute,
   MarketRoute: MarketRoute,
   RequestsRoute: RequestsRoute,
+  SupportRoute: SupportRoute,
   WithdrawRoute: WithdrawRoute,
   PackagesGroupRoute: PackagesGroupRoute,
 }
