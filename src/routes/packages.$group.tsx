@@ -2,6 +2,7 @@ import { createFileRoute, notFound, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { InvestmentPackages } from "@/components/InvestmentPackages";
+import { LoadingDialog, randomLoadingMs } from "@/components/LoadingDialog";
 import { getStoredUser, type StoredUser } from "@/lib/auth";
 import { fmt } from "@/lib/market";
 import { GROUP_LABEL, INVESTMENT_PACKAGES, isPackageGroup } from "@/lib/packages";
@@ -47,6 +48,7 @@ function PackagesPage() {
   const [balance, setBalance] = useState(0);
   const [sub, setSub] = useState<Subscription | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const u = getStoredUser();
